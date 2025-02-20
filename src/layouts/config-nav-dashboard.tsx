@@ -29,6 +29,11 @@ export const navData = [
     ),
   },
   {
+    title: 'Investment',
+    path: '/investment',
+    icon: icon('ic-stocks'),
+  },
+  {
     title: 'Blog',
     path: '/blog',
     icon: icon('ic-blog'),
