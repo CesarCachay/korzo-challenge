@@ -1,16 +1,15 @@
-import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import AuthContext from 'src/context/AuthProvider';
+import { useUser } from 'src/hooks/use-user';
 
 interface PrivateRouteProps {
   children: JSX.Element;
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const auth = useContext(AuthContext);
+  const user = useUser();
 
-  if (!auth || !auth.user) {
+  if (!user) {
     return <Navigate to="/sign-in" replace />;
   }
 

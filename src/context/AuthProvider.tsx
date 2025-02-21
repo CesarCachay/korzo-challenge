@@ -66,13 +66,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const verify = useCallback(async (email: string): Promise<string | void> => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_EXPRESS_API_URL}/api/verify`, {
+      const response = await fetch(`${import.meta.env.VITE_EXPRESS_API_URL}/verify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
-        credentials: 'include',
       });
 
       if (!response.ok) {
