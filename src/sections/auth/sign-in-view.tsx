@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useContext, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -11,18 +11,43 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
+import AuthContext from 'src/context/AuthProvider';
+
 import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export function SignInView() {
+  const auth = useContext(AuthContext);
   const router = useRouter();
 
+  if (!auth) throw new Error('AuthContext must be used within an AuthProvider');
+
+  const { login } = auth;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignIn = useCallback(() => {
-    router.push('/');
-  }, [router]);
+  const handleSignIn = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setErrorMessage(null);
+      setLoading(true);
+
+      const error = await login(email, password);
+
+      if (error) {
+        setErrorMessage(error);
+      } else {
+        router.push('/');
+      }
+
+      setLoading(false);
+    },
+    [login, email, password, router]
+  );
 
   const renderForm = (
     <Box display="flex" flexDirection="column" alignItems="flex-end">
@@ -30,8 +55,12 @@ export function SignInView() {
         fullWidth
         name="email"
         label="Email address"
-        defaultValue="hello@gmail.com"
+        // defaultValue="hello@gmail.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email address"
         InputLabelProps={{ shrink: true }}
+        required
         sx={{ mb: 3 }}
       />
 
@@ -43,7 +72,10 @@ export function SignInView() {
         fullWidth
         name="password"
         label="Password"
-        defaultValue="@demo1234"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        // defaultValue="@demo1234"
         InputLabelProps={{ shrink: true }}
         type={showPassword ? 'text' : 'password'}
         InputProps={{
@@ -65,6 +97,7 @@ export function SignInView() {
         color="inherit"
         variant="contained"
         onClick={handleSignIn}
+        loading={loading}
       >
         Sign in
       </LoadingButton>
@@ -81,6 +114,10 @@ export function SignInView() {
             Get started
           </Link>
         </Typography>
+      </Box>
+
+      <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{ mb: 2 }}>
+        {errorMessage && <Typography color="error">{errorMessage}</Typography>}
       </Box>
 
       {renderForm}
