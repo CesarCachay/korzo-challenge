@@ -12,6 +12,7 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<string | void>;
   logout: () => void;
+  verify: (email: string) => Promise<string | void>;
 }
 
 interface AuthProviderProps {
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = useCallback(
     async (email: string, password: string): Promise<string | void> => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_STOCK_API_URL}/authenticate`, {
+        const response = await fetch(`${import.meta.env.VITE_EXPRESS_API_URL}/authenticate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -63,6 +64,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     [setUser]
   );
 
+  const verify = useCallback(async (email: string): Promise<string | void> => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_EXPRESS_API_URL}/api/verify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return errorData.message || 'Invalid credentials';
+      }
+
+      const data = await response.json();
+      window.location.href = data.magic_link;
+    } catch (error) {
+      console.error('User verification error:', error);
+      return 'Network error. Please to verify user try again later.';
+    }
+    return '';
+  }, []);
+
   const logout = useCallback(() => {
     localStorage.removeItem('user');
     setUser(null);
@@ -73,8 +99,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       user,
       login,
       logout,
+      verify,
     }),
-    [user, login, logout]
+    [user, login, logout, verify]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;

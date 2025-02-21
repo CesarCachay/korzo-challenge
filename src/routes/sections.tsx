@@ -18,6 +18,7 @@ export const SignInPage = lazy(() => import('src/pages/sign-in'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const InvestmentPage = lazy(() => import('src/pages/investment'));
+export const VerifyPage = lazy(() => import('src/pages/verify'));
 
 // ----------------------------------------------------------------------
 
@@ -61,6 +62,10 @@ export function Router() {
           <SignInPage />
         </AuthLayout>
       ),
+    },
+    {
+      path: 'verify-user',
+      element: <VerifyPage />,
     },
     {
       path: '404',
