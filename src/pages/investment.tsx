@@ -1,4 +1,9 @@
+import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
+
+import { CONFIG } from 'src/config-global';
+
+import InvestmentView from 'src/sections/investment/InvestmentView';
 
 import { fetchStockData } from '../api';
 
@@ -16,10 +21,15 @@ export default function InvestmentPage() {
     return <div>Error: {error.message}</div>;
   }
 
-  console.log(data);
+  console.log('data', data);
+
   return (
-    <div>
-      <div>My APPLE Stocks!</div>
-    </div>
+    <>
+      <Helmet>
+        <title> {`Investments - ${CONFIG.appName}`}</title>
+      </Helmet>
+
+      <InvestmentView />
+    </>
   );
 }
