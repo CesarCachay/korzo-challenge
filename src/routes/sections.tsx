@@ -7,7 +7,7 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import { varAlpha } from 'src/theme/styles';
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
-import ProtectedRoute from 'src/layouts/components/protected-route';
+// import ProtectedRoute from 'src/layouts/components/protected-route';
 
 // ----------------------------------------------------------------------
 
@@ -38,13 +38,13 @@ export function Router() {
   return useRoutes([
     {
       element: (
-        <ProtectedRoute>
-          <DashboardLayout>
-            <Suspense fallback={renderFallback}>
-              <Outlet />
-            </Suspense>
-          </DashboardLayout>
-        </ProtectedRoute>
+        // <ProtectedRoute>
+        <DashboardLayout>
+          <Suspense fallback={renderFallback}>
+            <Outlet />
+          </Suspense>
+        </DashboardLayout>
+        // </ProtectedRoute>
       ),
       children: [
         { element: <HomePage />, index: true },

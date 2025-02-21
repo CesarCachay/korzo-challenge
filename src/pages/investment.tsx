@@ -1,9 +1,11 @@
+import { Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 
 import { CONFIG } from 'src/config-global';
 
-import InvestmentView from 'src/sections/investment/InvestmentView';
+import ChartSkeleton from 'src/sections/investment/chart-skeleton';
+import InvestmentView from 'src/sections/investment/investment-view';
 
 import { fetchStockData } from '../api';
 
@@ -14,14 +16,12 @@ export default function InvestmentPage() {
   });
 
   if (isLoading) {
-    return <div>Loading data ...</div>;
+    return <ChartSkeleton />;
   }
 
   if (isError) {
     return <div>Error: {error.message}</div>;
   }
-
-  console.log('data', data);
 
   return (
     <>
@@ -29,7 +29,9 @@ export default function InvestmentPage() {
         <title> {`Investments - ${CONFIG.appName}`}</title>
       </Helmet>
 
-      <InvestmentView />
+      <Suspense fallback={<ChartSkeleton />}>
+        {data && <InvestmentView chartData={data} />}
+      </Suspense>
     </>
   );
 }

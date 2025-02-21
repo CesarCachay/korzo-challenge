@@ -1,6 +1,7 @@
 import {
   Title,
   Legend,
+  Filler,
   Tooltip,
   BarElement,
   LinearScale,
@@ -17,6 +18,7 @@ ChartJS.register(
   LineElement,
   BarElement,
   Title,
+  Filler,
   Tooltip,
   Legend
 );
