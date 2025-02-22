@@ -27,10 +27,10 @@ export const calculateStockMetrics = (prices: StockPrice[]): StockMetrics => {
   const isPositiveChange = priceChange > 0;
 
   const highestPrice = Math.max(...prices.map((item) => item.close));
-  const highestDiff = ((currentPrice - highestPrice) / highestPrice) * 100;
+  const highestDiff = ((highestPrice - currentPrice) / currentPrice) * 100;
 
   const lowestPrice = Math.min(...prices.map((item) => item.close));
-  const lowestDiff = ((currentPrice - lowestPrice) / lowestPrice) * 100;
+  const lowestDiff = ((currentPrice - lowestPrice) / currentPrice) * 100;
 
   const formatMonthYear = (dateString: string) =>
     new Date(dateString).toLocaleString('en-US', { month: 'short', year: 'numeric' });

@@ -27,6 +27,7 @@ export default function StockSummaryCards({ prices }: StockSummaryCardsProps) {
     lowestDiff,
     currentMonth,
     lastMonth,
+    currentPrice,
   } = calculateStockMetrics(prices);
 
   return (
@@ -34,6 +35,7 @@ export default function StockSummaryCards({ prices }: StockSummaryCardsProps) {
       {/* Last comparison between months */}
       <Card sx={{ minWidth: 200, padding: 2, textAlign: 'center' }}>
         <CardContent>
+          <Typography marginBottom={1}>Current Price: ${currentPrice}</Typography>
           <Typography variant="h6">Monthly Change</Typography>
           <Typography variant="h6">{`${currentMonth} vs ${lastMonth}`}</Typography>
           <Typography variant="h4" color={isPositiveChange ? 'green' : 'red'}>
