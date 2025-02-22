@@ -10,6 +10,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
   login: (email: string, password: string) => Promise<string | void>;
   logout: () => void;
   verify: (email: string) => Promise<string | void>;
@@ -23,6 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -35,6 +37,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         localStorage.removeItem('user');
       }
     }
+    setLoading(false);
   }, []);
 
   const login = useCallback(
@@ -97,10 +100,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     () => ({
       user,
       login,
+      loading,
       logout,
       verify,
     }),
-    [user, login, logout, verify]
+    [user, login, logout, verify, loading]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
