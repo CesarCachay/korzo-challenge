@@ -45,7 +45,7 @@ export function VerifyView() {
         <Typography variant="h5">Verify user to get started</Typography>
       </Box>
 
-      <Box width={800} display="flex" flexDirection="column" alignItems="flex-end">
+      <Box width={520} display="flex" flexDirection="column" alignItems="flex-end">
         <TextField
           fullWidth
           name="email"
