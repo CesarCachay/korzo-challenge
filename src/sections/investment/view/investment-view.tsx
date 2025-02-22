@@ -1,9 +1,11 @@
-import type { StockData, StockPrice } from 'src/api';
+import type { StockData, StockPrice } from 'src/api/getStocks';
 
 import 'chart.js';
 import { Line } from 'react-chartjs-2';
 
 import { Container, Typography } from '@mui/material';
+
+import StockSummaryCards from '../summary-cards';
 
 interface ChartData {
   labels: string[];
@@ -40,7 +42,7 @@ const chartOptions = {
   },
 };
 
-export default function InvestmentView({ chartData }: InvestmentViewProps) {
+export function InvestmentView({ chartData }: InvestmentViewProps) {
   if (!chartData || !chartData.prices) {
     return <Typography style={{ color: 'red' }}>Error: No data available</Typography>;
   }
@@ -66,6 +68,8 @@ export default function InvestmentView({ chartData }: InvestmentViewProps) {
 
   return (
     <Container>
+      <StockSummaryCards prices={chartData.prices} />
+
       <div style={{ width: '600px', margin: '0 auto' }}>
         <h2>Stock Prices for {chartData.symbol}</h2>
         <Line data={formattedChartData} options={chartOptions} />

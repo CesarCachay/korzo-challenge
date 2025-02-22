@@ -9,7 +9,7 @@ export interface StockData {
 }
 
 export async function fetchStockData(): Promise<StockData> {
-  const response = await fetch(`${import.meta.env.VITE_EXPRESS_API_URL}s`);
+  const response = await fetch(`${import.meta.env.VITE_EXPRESS_API_URL}/stocks`);
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }

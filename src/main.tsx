@@ -18,7 +18,10 @@ root.render(
   <StrictMode>
     <HelmetProvider>
       <BrowserRouter>
-        <AuthKitProvider clientId={import.meta.env.VITE_WORKOS_CLIENT_ID}>
+        <AuthKitProvider
+          clientId={import.meta.env.VITE_WORKOS_CLIENT_ID}
+          redirectUri={import.meta.env.VITE_WORKOS_REDIRECT_URI}
+        >
           <AuthProvider>
             <QueryClientProvider client={queryClient}>
               <Suspense>

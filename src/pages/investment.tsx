@@ -3,11 +3,11 @@ import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 
 import { CONFIG } from 'src/config-global';
+import { fetchStockData } from 'src/api/getStocks';
 
 import ChartSkeleton from 'src/sections/investment/chart-skeleton';
-import InvestmentView from 'src/sections/investment/investment-view';
-
-import { fetchStockData } from '../api';
+import { InvestmentView } from 'src/sections/investment/view/investment-view';
+import StockSummaryCardsSkeleton from 'src/sections/investment/summary-cards-skeleton';
 
 export default function InvestmentPage() {
   const { data, isLoading, isError, error } = useQuery({
@@ -16,7 +16,12 @@ export default function InvestmentPage() {
   });
 
   if (isLoading) {
-    return <ChartSkeleton />;
+    return (
+      <div>
+        <StockSummaryCardsSkeleton />
+        <ChartSkeleton />
+      </div>
+    );
   }
 
   if (isError) {
