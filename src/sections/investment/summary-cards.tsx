@@ -1,6 +1,6 @@
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { Box, Card, Typography, CardContent } from '@mui/material';
+import { Box, Card, Typography, CardContent, useMediaQuery, useTheme } from '@mui/material';
 
 import { calculateStockMetrics } from 'src/utils/calculate-metrics';
 
@@ -14,6 +14,9 @@ interface StockSummaryCardsProps {
 }
 
 export default function StockSummaryCards({ prices }: StockSummaryCardsProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   if (!prices || prices.length === 0) {
     return <Typography style={{ color: 'red' }}>Error: No data available</Typography>;
   }
@@ -31,9 +34,23 @@ export default function StockSummaryCards({ prices }: StockSummaryCardsProps) {
   } = calculateStockMetrics(prices);
 
   return (
-    <Box display="flex" gap={2} justifyContent="center" marginTop={3}>
+    <Box
+      display="flex"
+      flexDirection={isMobile ? 'column' : 'row'}
+      gap={2}
+      justifyContent="center"
+      marginTop={3}
+      alignItems="center"
+    >
       {/* Last comparison between months */}
-      <Card sx={{ minWidth: 200, padding: 2, textAlign: 'center' }}>
+      <Card
+        sx={{
+          minWidth: 200,
+          padding: 2,
+          textAlign: 'center',
+          width: isMobile ? '100%' : 'auto',
+        }}
+      >
         <CardContent>
           <Typography marginBottom={1}>Current Price: ${currentPrice}</Typography>
           <Typography variant="h6">Monthly Change</Typography>
@@ -45,8 +62,19 @@ export default function StockSummaryCards({ prices }: StockSummaryCardsProps) {
         </CardContent>
       </Card>
 
-      {/* Highest pice */}
-      <Card sx={{ minWidth: 200, padding: 2, textAlign: 'center' }}>
+      {/* Highest price */}
+      <Card
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 200,
+          minWidth: 200,
+          padding: 2,
+          textAlign: 'center',
+          width: isMobile ? '100%' : 'auto',
+        }}
+      >
         <CardContent>
           <Typography variant="h6">Highest Price</Typography>
           <Typography variant="h4">${highestPrice.toFixed(2)}</Typography>
@@ -57,7 +85,18 @@ export default function StockSummaryCards({ prices }: StockSummaryCardsProps) {
       </Card>
 
       {/* Lowest price */}
-      <Card sx={{ minWidth: 200, padding: 2, textAlign: 'center' }}>
+      <Card
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 200,
+          minWidth: 200,
+          padding: 2,
+          textAlign: 'center',
+          width: isMobile ? '100%' : 'auto',
+        }}
+      >
         <CardContent>
           <Typography variant="h6">Lowest Price</Typography>
           <Typography variant="h4">${lowestPrice.toFixed(2)}</Typography>

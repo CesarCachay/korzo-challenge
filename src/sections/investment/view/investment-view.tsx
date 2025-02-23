@@ -3,7 +3,7 @@ import type { StockData, StockPrice } from 'src/api/getStocks';
 import 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-import { Container, Typography } from '@mui/material';
+import { useTheme, Container, Typography, useMediaQuery } from '@mui/material';
 
 import StockSummaryCards from '../summary-cards';
 
@@ -30,6 +30,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 
 const chartOptions = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     tooltip: {
       callbacks: {
@@ -43,6 +44,9 @@ const chartOptions = {
 };
 
 export function InvestmentView({ chartData }: InvestmentViewProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   if (!chartData || !chartData.prices) {
     return <Typography style={{ color: 'red' }}>Error: No data available</Typography>;
   }
@@ -70,9 +74,18 @@ export function InvestmentView({ chartData }: InvestmentViewProps) {
     <Container>
       <StockSummaryCards prices={chartData.prices} />
 
-      <div style={{ width: '600px', margin: '0 auto' }}>
-        <h2>Stock Prices for {chartData.symbol}</h2>
-        <Line data={formattedChartData} options={chartOptions} />
+      <div
+        style={{
+          width: isMobile ? '100%' : '600px',
+          margin: '40px auto 60px auto',
+        }}
+      >
+        <Typography variant="h5" align="center">
+          Stock Prices for {chartData.symbol}
+        </Typography>
+        <div style={{ height: isMobile ? '300px' : '400px' }}>
+          <Line data={formattedChartData} options={chartOptions} />
+        </div>
       </div>
     </Container>
   );
